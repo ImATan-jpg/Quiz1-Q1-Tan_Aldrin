@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explosive Sales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+            margin: 0;
+            background-color: #f0f0f0; 
+            color: #333; 
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            background-color: #444; 
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .nav-link {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px;
+            background-color: #001F3F; 
+            width: 100%;
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px; 
+            color: #fff; 
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+        }
+
+        button {
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            cursor: pointer;
+            border-radius: 50px;
+            background-color: hsl(255deg 50% 40%);
+            border: none; 
+        }
+
+        .default-btn, .hover-btn {
+            background-color: hsl(255deg 50% 40%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: all .3s ease;
+        }
+
+        .hover-btn {
+            position: absolute;
+            inset: 0;
+            background-color: hsl(255deg 50% 49%);
+            transform: translate(0%, 100%);
+        }
+
+        .default-btn span {
+            color: hsl(0, 0%, 100%);
+        }
+
+        .hover-btn span {
+            color: hsl(50deg 100% 50%);
+        }
+
+        button:hover .default-btn {
+            transform: translate(0%, -100%);
+        }
+
+        button:hover .hover-btn {
+            transform: translate(0%, 0%);
+        }
+
+        section {
+            padding: 20px;
+            display: none; 
+            min-height: 100vh; 
+            overflow: auto; 
+            width: 100%;
+        }
+
+        #products:target,
+        #checkout:target,
+        #account:target,
+        #home:target {
+            display: block;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 20px; 
+            max-width: 1200px; /* Limit the maximum width */
+            margin: 20px auto; /* Center the container */
+            padding: 20px;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 150px; 
+            height: 150px; 
+            object-fit: cover; 
+            margin-bottom: 10px; 
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1.2rem;
+            }
+
+            .product {
+                width: 100%; 
+            }
+
+            .product-image {
+                width: 120px; 
+                height: 120px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+
+        .animated-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 16px 36px;
+            border: 4px solid;
+            border-color: transparent;
+            font-size: 16px;
+            background-color: inherit;
+            border-radius: 100px;
+            font-weight: 600;
+            color: greenyellow;
+            box-shadow: 0 0 0 2px greenyellow;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            margin: 20px auto; /* Center the button */
+        }
+
+        .animated-button svg {
+            position: absolute;
+            width: 24px;
+            fill: greenyellow;
+            z-index: 9;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .animated-button .arr-1 {
+            right: 16px;
+        }
+
+        .animated-button .arr-2 {
+            left: -25%;
+        }
+
+        .animated-button .circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background-color: greenyellow;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .animated-button .text {
+            position: relative;
+            z-index: 1;
+            transform: translateX(-12px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .animated-button:hover {
+            box-shadow: 0 0 0 12px transparent;
+            color: #212121;
+            border-radius: 12px;
+        }
+
+        .animated-button:hover .arr-1 {
+            right: -25%;
+        }
+
+        .animated-button:hover .arr-2 {
+            left: 16px;
+        }
+
+        .animated-button:hover .text {
+            transform: translateX(12px);
+        }
+
+        .animated-button:hover svg {
+            fill: #212121;
+        }
+
+        .animated-button:active {
+            scale: 0.95;
+            box-shadow: 0 0 0 4px greenyellow;
+        }
+
+        .animated-button:hover .circle {
+            width: 220px;
+            height: 220px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#products" class="nav-link">Products</a>
+        <a href="#checkout" class="nav-link">Checkout</a>
+        <a href="#account" class="nav-link">Account</a>
+    </div>
+
+    <header id="home">
+        <h1>Welcome to Explosive Sales!</h1>
+        <p>Your one-stop shop for all things explosive!</p>
+        <a href="#products">
+            <button>
+                <div class="default-btn">
+                    <span>Quick View</span>
+                </div>
+                <div class="hover-btn">
+                    <span>Shop Now</span>
+                </div>
+            </button>
+        </a>
+    </header>
+
+    <section id="products">
+        <center>
+            <h2>Our Products</h2>
+        </center>
+        <div class="product-container">
+            <div class="product">
+                <img src="https://fullboreqs.com.au/wp-content/uploads/2015/03/explosives-supply-2-480x320.jpg" alt="Dynamite Stick" class="product-image">
+                <h3>Dynamite Stick</h3>
+                <label for="quantity1">Quantity:</label>
+                <input type="number" id="quantity1" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://flashbangsmoke.com/wp-content/uploads/2023/03/M12-Flash-Bang-600x600.png" alt="Flash Bang" class="product-image">
+                <h3>Flash Bang</h3>
+                <label for="quantity2">Quantity:</label>
+                <input type="number" id="quantity2" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://hahn.com.ph/wp-content/uploads/2024/03/ox88ugflmjbpifvcabfy.jpg" alt="Pepper Spray" class="product-image">
+                <h3>Pepper Spray</h3>
+                <label for="quantity3">Quantity:</label>
+                <input type="number" id="quantity3" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*q026YyCjgRVW4vI0YDtJdg.jpeg" alt="Tear Gas" class="product-image">
+                <h3>Tear Gas</h3>
+                <label for="quantity4">Quantity:</label>
+                <input type="number" id="quantity4" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://assets.weforum.org/article/image/responsive_big_webp_ljpMtda-JCHNhjMAIcDRmIN2_EXCoBjMlEgyMMbc57w.webp" alt="Nuclear Bomb" class="product-image">
+                <h3>Nuclear Bomb</h3>
+                <label for="quantity5">Quantity:</label>
+                <input type="number" id="quantity5" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://nationalinterest.org/sites/default/files/styles/desktop__1260_/public/main_images/Clipboard%20%2834%29_3.jpg?itok=B2HT082y" alt="Hydrogen Bomb" class="product-image">
+                <h3>Hydrogen Bomb</h3>
+                <label for="quantity6">Quantity:</label>
+                <input type="number" id="quantity6" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/M-61Grenade.jpg/220px-M-61Grenade.jpg" alt="Hand Grenade" class="product-image">
+                <h3>Hand Grenade</h3>
+                <label for="quantity7">Quantity:</label>
+                <input type="number" id="quantity7" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Trip-wire_pipe_bomb.jpg/220px-Trip-wire_pipe_bomb.jpg" alt="Pipe Bomb" class="product-image">
+                <h3>Pipe Bomb</h3>
+                <label for="quantity8">Quantity:</label>
+                <input type="number" id="quantity8" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Training_bijstandseenheid_12_%28molotov_zoom%29.jpg/197px-Training_bijstandseenheid_12_%28molotov_zoom%29.jpg" alt="Molotov Cocktail" class="product-image">
+                <h3>Molotov Cocktail</h3>
+                <label for="quantity9">Quantity:</label>
+                <input type="number" id="quantity9" min="0" value="0">
+            </div>
+            <div class="product">
+                <img src="https://www.skytamer.com/2007/250/20071201-083.jpg" alt="Plane" class="product-image">
+                <h3>Plane</h3>
+                <label for="quantity10">Quantity:</label>
+                <input type="number" id="quantity10" min="0" value="0">
+            </div>
+        </div>
+
+        <a href="#checkout" class="animated-button">
+            <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
+            <span class="text">Order</span>
+            <span class="circle"></span>
+            <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
+        </a>
+    </section>
+
+    <section id="checkout">
+        <h2>Checkout</h2>
+        <button class="animated-button">
+            <span class="text">Order</span>
+        </button>
+    </section>
+
+    <section id="account">
+        <h2>Account</h2>
+        <p>Manage your account settings here.</p>
+    </section>
+</body>
+</html>
